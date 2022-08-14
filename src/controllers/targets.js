@@ -8,7 +8,6 @@ module.exports = {
       const getTargets = yield TargetOfUser.findOne({ user: UID })
       const getTargetsofMonth = yield TargetOfUser.findOne({user: UID, targets: { $elemMatch: {month: targets.month} }});
       if (!getTargets) {
-        console.log(req.body)
         const newTargets = yield TargetOfUser.create({user: UID, targets: targets});  
         return newTargets;
       }

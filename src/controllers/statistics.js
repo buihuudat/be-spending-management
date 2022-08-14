@@ -31,7 +31,6 @@ module.exports = {
 
   update: (req, res) => {
     const { user, statistics } = req.body;
-    console.log(user, statistics)
     co(function* () {
       const auth = yield UserDataStatisticsModel.findOne({user: user});
       if (!auth) {
@@ -58,7 +57,6 @@ module.exports = {
 
   delete: (req, res) => {
     const { user, idStatistics } = req.body;
-    console.log(req.body)
     co(function* () {
       const auth = yield UserDataStatisticsModel.findOne({user: user});
       if (!auth) {
