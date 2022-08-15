@@ -11,14 +11,14 @@ module.exports = {
         const newTargets = yield TargetOfUser.create({user: UID, targets: targets});  
         return newTargets;
       }
-      else if (getTargetsofMonth) {
+      if (getTargetsofMonth) {
         const newTargetOfMonth = yield TargetOfUser.findOneAndUpdate(
           {user: UID, 'targets.month': targets.month},
           {$set: { 'targets.$.targets': targets.targets }},
           {new: true}
           )
-          return newTargetOfMonth;
-        }
+        return newTargetOfMonth;
+      }
       const newTargetOfMonth = yield TargetOfUser.findOneAndUpdate(
         {user: UID},
         {$push: {targets: targets}}
