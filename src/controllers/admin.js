@@ -7,7 +7,6 @@ const TargetOfUser = require('../models/targets');
 module.exports = {
   delete: (req, res) => {
     const { UID, AID } = req.body;
-    console.log(UID)
     co(function* () {
       const authAdmin = yield User.findOne({_id: AID}).select('permission');
         if (authAdmin.permission !== 'Admin') {
@@ -15,8 +14,8 @@ module.exports = {
         }
   
         const user =  User.findOneAndDelete({ _id: UID });
-        const statistics = UserDataStatisticsModel.findOneAndDelete({ 'statistics.user': UID });
-        const targets = TargetOfUser.findOneAndDelete({ 'targets.user': UID });
+        const statistics = UserDataStatisticsModel.findOneAndDelete({ user: UID });
+        const targets = TargetOfUser.findOneAndDelete({ user: UID });
         const deleted = yield [user, statistics, targets];
         return deleted;
     })
