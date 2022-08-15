@@ -3,24 +3,25 @@ const TargetOfUser = require('../models/targets');
 
 module.exports = {
   get: (req, res) => {
-    const { UID, targets } = req.body
+    const { user, targets } = req.body
+    console.log(req.body)
     co(function* () {
-      const getTargets = yield TargetOfUser.findOne({ user: UID })
-      const getTargetsofMonth = yield TargetOfUser.findOne({user: UID, targets: { $elemMatch: {month: targets.month} }});
+      const getTargets = yield TargetOfUser.findOne({ user: user })
+      const getTargetsofMonth = yield TargetOfUser.findOne({user: user, targets: { $elemMatch: {month: targets.month} }});
       if (!getTargets) {
         const newTargets = yield TargetOfUser.create(req.body);  
         return newTargets;
       }
       if (getTargetsofMonth) {
         const newTargetOfMonth = yield TargetOfUser.findOneAndUpdate(
-          {user: UID, 'targets.month': targets.month},
+          {user: user, 'targets.month': targets.month},
           {$set: { 'targets.$.targets': targets.targets }},
           {new: true}
           )
         return newTargetOfMonth;
       }
       const newTargetOfMonth = yield TargetOfUser.findOneAndUpdate(
-        {user: UID},
+        {user: user},
         {$push: {targets: targets}}
       )
       return newTargetOfMonth;

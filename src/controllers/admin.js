@@ -7,6 +7,7 @@ const TargetOfUser = require('../models/targets');
 module.exports = {
   delete: (req, res) => {
     const { UID, AID } = req.body;
+    console.log(req.body)
     co(function* () {
       const authAdmin = yield User.findOne({_id: AID}).select('permission');
         if (authAdmin.permission !== 'Admin') {
